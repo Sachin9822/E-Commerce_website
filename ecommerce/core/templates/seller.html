@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Material Design Bootstrap</title>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.11.2/css/all.css">
+    <!-- Bootstrap core CSS -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <!-- Material Design Bootstrap -->
+    <link href="css/mdb.min.css" rel="stylesheet">
+    
+</head>
+<style>
+    .form-group
+    {
+       font-weight: 400;
+
+    }
+</style>
+<body>
+    <h3 style="text-align: center; font-weight: 500; margin-top: 30px;">Seller Form</h3>
+   <div class="card" style="width: 50%; margin:10px auto; padding: 3px;">
+    <form style="margin: 40px; " class="card-body " >
+        <div class="form-group" >
+          <label for="exampleInputEmail1">Title</label>
+          <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter Title of product">
+        </div>
+        <div class="form-group">
+          <label for="exampleInputPassword1">Price</label>
+          <input type="number" class="form-control" id="exampleInputPassword1" placeholder="Enter price">
+        </div>
+        <div class="form-group">
+            <label for="exampleInputPassword1">Description</label>
+            <input type="text" class="form-control" id="exampleInputPassword1" placeholder="Enter product description">
+          </div>
+          <div class="form-group">
+            <label for="exampleInputPassword1">Quantity</label>
+            <input type="number" class="form-control" id="exampleInputPassword1" placeholder="Enter quantity">
+          </div>
+          <div class="form-group">
+            <label for="inputState">Category</label>
+            <select id="inputState" class="form-control">
+              <option selected>...</option>
+              <option>Shoes</option>
+              <option>tshirts</option>
+            </select>
+          </div>
+          <div class="form-group ">
+            <label for="exampleInputPassword1">Additional information</label>
+            <input type="text" class="form-control" id="exampleInputPassword1" placeholder="Enter Additional information">
+          </div>
+          <div class="form-group">
+            <label for="exampleInputPassword1">Product image</label>
+            <input type="image" src="img/sample.jpg" class="form-control" id="exampleInputPassword1"  style="height:50% ;width:50%; text-align: center;">
+          </div>
+          <div class="form-group" style="text-align: center;">
+        <button type="submit" class="btn btn-primary" >Submit</button>
+          </div>
+    </form>
+   </div>
+</body>
+</html>
