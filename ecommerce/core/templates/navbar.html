@@ -62,7 +62,7 @@
     <div class="container">
 
       <!-- Brand -->
-      <a class="navbar-brand waves-effect" href="https://mdbootstrap.com/docs/jquery/" target="_blank">
+      <a class="navbar-brand waves-effect" href="/">
         <strong class="blue-text">SuperStore</strong>
       </a>
 
@@ -85,11 +85,6 @@
           <li class="nav-item">
             <a class="nav-link waves-effect" arget="_blank">About</a>
           </li>
-          <li class="nav-item active">
-            <a class="nav-link waves-effect" href="checkout/">Checkout
-              <span class="sr-only">(current)</span>
-            </a>
-          </li>
         
         </ul>
 
@@ -97,7 +92,7 @@
         <ul class="navbar-nav nav-flex-icons">
           {%if request.user.is_authenticated%}
           <li class="nav-item">
-            <a class="nav-link waves-effect">
+            <a class="nav-link waves-effect" href="checkout/">
               <span class="badge red z-depth-1 mr-1"> 1 </span>
               <i class="fas fa-shopping-cart"></i>
               <span class="clearfix d-none d-sm-inline-block"> Cart </span>
@@ -113,7 +108,7 @@
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link waves-effect" href="{% url 'account_signup'%}">
+            <!-- <a class="nav-link waves-effect" href="{}"> -->
               <span class="clearfix d-none d-sm-inline-block"> SignUp </span>
             </a>
           </li>

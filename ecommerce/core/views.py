@@ -7,6 +7,12 @@ from .models import *
 
 
 # Create your views here.
+def message(msg):
+    print("################################################")
+    print()
+    print(msg)
+    print()
+    print("################################################")
 
 class HomeView(ListView):
     model = Items 
@@ -46,30 +52,55 @@ def add_to_cart(request,slug):
 def remove_from_cart(request,slug):
     item = get_object_or_404(Items,slug=slug)
     order_qs = Order.objects.filter(user=request.user,ordered=False)
+    print("----------------------------------------------------------")
+    print(order_qs)
+    print("----------------------------------------------------------")
     if order_qs.exists():
         order = order_qs[0]
         if order.items.filter(item__slug=item.slug).exists():
-            order_item = Orderitems.objects.filter(
-                    item=item,
-                    user=request.user,
-                    ordered=False
-                    )[0]
-            order.items.remove(order_item)
+            d = order.items.filter(item__slug=item.slug)
+            d.delete()
+            # order_item = Orderitems.objects.filter(
+            #         item=item,
+            #         user=request.user,
+            #         ordered=False
+            #         )[0]
+            # order.items.remove(order_item)
             messages.info(request,"item was removed from your cart")
-            return redirect("core:product",slug=slug)
+            return redirect("core:Checkout")
         else:
             # the order item does not exists
             messages.info(request,"item is does not exist in the cart")
-            return redirect("core:product",slug=slug)
+            return redirect("core:Checkout")
     else:
         # tell user that he doesnt have a product
         messages.info(request,"User doesnt have an order")
-        return redirect("core:product",slug=slug)
+        return redirect("core:Checkout")
+
+# def checkout_from_cart(request):
+#     order_qs = Order.objects.filter(user=request.user)
+#     items = order_qs[0].items.all()
+#     total_amt = 0
+#     for i in items:
+#         total_amt+= i.price
+#     context = {
+#             'items': items,
+#             'total_amt': total_amt
+#             }
+
+
 
 def checkout(request):
+    order_qs = Order.objects.filter(user=request.user)
+    items = order_qs[0].items.all()
+    total_amt = 0
+    for i in items:
+        print(i.item)
+        total_amt+= i.item.price
     context = {
-            'orders_items': Orderitems.objects.all()
-        }
+            'items': items,
+            'total_amt': total_amt
+            }
     return render(request,"checkout-page.html",context)
 
 def product_page(request):
