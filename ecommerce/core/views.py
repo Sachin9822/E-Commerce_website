@@ -4,7 +4,7 @@ from django.shortcuts import redirect, render,get_object_or_404
 from django.http import HttpResponse
 from django.views.generic import ListView,DetailView
 from .models import *
-
+from .filter import *
 
 # Create your views here.
 def message(msg):
@@ -17,10 +17,25 @@ def message(msg):
 class HomeView(ListView):
     model = Items 
     template_name="home-page.html"
+    filterset_class = ItemFilter
+    def get_queryset(self):
+        query_set = super().get_queryset()
+        self.filterset = self.filterset_class(self.request.GET,queryset=query_set)
+        return self.filterset.qs.distinct()
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['Filterset'] = self.filterset
+        return context
+
 
 class ItemDetailView(DetailView):
     model= Items
     template_name="product-page.html"
+
+class OrderSummaryView(DetailView):
+    model = Order 
+    template_name = "order-summary.html"
 
 def add_to_cart(request,slug):
     item = get_object_or_404(Items,slug=slug) 
