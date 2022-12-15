@@ -1,9 +1,10 @@
+import uuid
 from django.conf import settings
 from django.contrib.auth.models import User
 from django.shortcuts import reverse
 from django.views.generic import ListView,DetailView
 from django.db import models
-
+from playground.models import *
 # Create your models here.
 CAT_CHOICES = (
         ('S','Shirt'),
@@ -37,8 +38,9 @@ class Items(models.Model):
     slug = models.SlugField()
     description = models.TextField()
     
-    user = models.ForeignKey(user_group,on_delete=models.CASCADE)
+    seller_id = models.IntegerField(default=-1)
     image = models.ImageField(upload_to='images',default=None) 
+    quantity = models.IntegerField(default=1)
 
     def __str__(self):
         return self.title
@@ -60,8 +62,15 @@ class Items(models.Model):
             })
 
 class SellerOrders(models.Model):
-    seller = models.ForeignKey(seller_group,on_delete=models.CASCADE)
-    products = models.ManyToManyField(Items)
+    order_id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    seller_id = models.IntegerField(default=-1,unique=False)
+    item_id = models.IntegerField(default=-1)
+    customer_name = models.CharField(max_length=30,default=None)
+    customer_address = models.CharField(max_length=200,default=None)
+    customer_email = models.EmailField(default=None)
+
+    def __str__(self):
+        return f"seller id - {self.seller_id} has"
 
 
 class Orderitems(models.Model):

@@ -25,7 +25,12 @@ def login_request(request):
 
         if user is not None:
             auth_login(request,user)
-            return redirect('core:Item-list')
+            print(request.user.groups.all()[0]=='seller')
+            if request.user.groups.all()[0].name == 'seller':
+                return redirect('core:Seller')
+            else:
+                return redirect('core:Item-list')
+            # if request.user.groups.all()[0]
 
     return render(request,'login.html',context)
 

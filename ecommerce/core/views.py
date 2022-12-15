@@ -14,9 +14,34 @@ def message(msg):
     print()
     print("################################################")
 
-class SellerView(ListView):
-    model=SellerOrders
-    template_name="sellerOrder.html"
+def SellerView(request):
+    sellerOrder =  SellerOrders.objects.all()
+    totalOrder = 0
+    totalOrder = 0
+    
+    totalRevenue = 0
+    allowed_sellerOrder = []
+    for so in sellerOrder:
+        print(request.user.id,end=" - ")
+        print(so.seller_id)
+        print(so.seller_id == request.user.pk)
+        if so.seller_id != request.user.pk:
+            continue
+        totalOrder+=1
+        allowed_sellerOrder.append(so)
+        item = Items.objects.filter(pk = so.item_id)[0]
+        totalRevenue+=item.price
+    print("Total Revenue is ",totalRevenue)
+    print("Total order is ",totalOrder)
+
+    
+    context={
+            'object_list': allowed_sellerOrder,
+            'total_orders': totalOrder,
+            'total_revenue': totalRevenue,
+            }
+    return render(request,"sellerOrder.html",context)
+
 
 class HomeView(ListView):
     model = Items 
@@ -96,22 +121,51 @@ def remove_from_cart(request,slug):
         messages.info(request,"User doesnt have an order")
         return redirect("core:Checkout")
 
-# def checkout_from_cart(request):
-#     order_qs = Order.objects.filter(user=request.user)
-#     items = order_qs[0].items.all()
-#     total_amt = 0
-#     for i in items:
-#         total_amt+= i.price
-#     context = {
-#             'items': items,
-#             'total_amt': total_amt
-#             }
 
 
-
-def checkout(request):
+def cart(request):
     order_qs = Order.objects.filter(user=request.user)
     items = order_qs[0].items.all()
+    try:
+        # marking all as ordered 
+        if request.method=="POST":
+            print("MAking post request")
+            f_name = request.POST.get('firstname')
+            l_name = request.POST.get('lastname')
+            name = f_name+" "+l_name
+            print(request.POST)
+
+            email = request.POST.get('email')
+            address = request.POST.get('address')
+            country = request.POST.get('country')
+            state = request.POST.get('state')
+            email = request.POST.get('email')
+            zip = request.POST.get('zip')
+
+            final_address = address+","+str(country)+","+str(state)+","+str(zip)
+            
+            for i in items:
+                item = Items.objects.get(pk = i.item.pk)
+                print(item)
+                item.quantity = i.item.quantity
+                seller = SellerOrders.objects.create(
+                        seller_id = i.item.seller_id,
+                        item_id = i.item.pk,
+                        customer_name = name ,
+                        customer_address = final_address,
+                        customer_email = email 
+                        )
+
+                i.ordered = True
+                i.delete()
+                print(seller)
+        # adding that in seller order
+
+            messages.info(request,"Your Order Has been Placed")
+            return redirect("core:Item-list")
+    except Exception as e:
+        print(e)
+
     total_amt = 0
     for i in items:
         print(i.item)
