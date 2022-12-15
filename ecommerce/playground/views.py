@@ -1,6 +1,6 @@
 from django.shortcuts import redirect, render
 from django.http import HttpResponse
-from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.forms import User, UserCreationForm
 # Create your views here.
 
 from django.contrib.auth import authenticate,logout
@@ -12,7 +12,7 @@ from .forms import CreateUserForm
 
 
 def say_hello(request):
-    return render (request,'hello.html',{'name':user.name})
+    return render (request,'hello.html',{'name':request.User})
 
 
 def login_request(request):
@@ -25,12 +25,14 @@ def login_request(request):
 
         if user is not None:
             auth_login(request,user)
-            return redirect('/hello/')
-
-
-
+            return redirect('core:Item-list')
 
     return render(request,'login.html',context)
+
+def logout_user(request):
+    if request.user.is_authenticated:
+        logout(request)
+    return redirect("start:login")
 
 def signup(request):
     form=CreateUserForm()

@@ -1,9 +1,9 @@
 from django.urls import path
 from .views import *
 
-app_name = 'core'
+app_name = 'ecommerce'
 urlpatterns = [
-            path('',HomeView.as_view(),name='Item-list'),
+            path('home/',HomeView.as_view(),name='Item-list'),
             path('seller/',SellerView.as_view(),name='Seller'),
             path('checkout/',checkout,name='Checkout'),
             path('order-summary/',OrderSummaryView.as_view(),name='order-summary'),
