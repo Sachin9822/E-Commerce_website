@@ -14,6 +14,10 @@ def message(msg):
     print()
     print("################################################")
 
+class SellerView(ListView):
+    model=SellerOrders
+    template_name="sellerOrder.html"
+
 class HomeView(ListView):
     model = Items 
     template_name="home-page.html"
@@ -111,7 +115,8 @@ def checkout(request):
     total_amt = 0
     for i in items:
         print(i.item)
-        total_amt+= i.item.price
+        i.item.price *= i.quantity
+        total_amt+= i.item.price 
     context = {
             'items': items,
             'total_amt': total_amt

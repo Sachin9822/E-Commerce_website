@@ -5,4 +5,4 @@ class ItemFilter(FilterSet):
     title = CharFilter(field_name='title',lookup_expr="icontains")
     class Meta:
         model = Items
-        fields = '__all__'
+        fields = ['title','category','label']
